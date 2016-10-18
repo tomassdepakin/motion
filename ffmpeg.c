@@ -60,6 +60,7 @@
 #define MY_CODEC_ID_MPEG2VIDEO AV_CODEC_ID_MPEG2VIDEO
 #define MY_CODEC_ID_H264      AV_CODEC_ID_H264
 #define MY_CODEC_ID_HEVC      AV_CODEC_ID_HEVC
+#define MY_CODEC_ID_VP8       AV_CODEC_ID_VP8
 
 #else
 
@@ -70,6 +71,7 @@
 #define MY_CODEC_ID_MPEG2VIDEO CODEC_ID_MPEG2VIDEO
 #define MY_CODEC_ID_H264      CODEC_ID_H264
 #define MY_CODEC_ID_HEVC      CODEC_ID_H264
+#define MY_CODEC_ID_VP8       CODEC_ID_VP8
 
 #endif
 /*********************************************/
@@ -262,7 +264,7 @@ void ffmpeg_finalise(void) {
  *      AVOutputFormat pointer or NULL if any error happens.
  */
 static AVOutputFormat *get_oformat(const char *codec, char *filename){
-    const char *ext;
+    const int *ext_length;
     AVOutputFormat *of = NULL;
     /*
      * Here, we use guess_format to automatically setup the codec information.
@@ -307,6 +309,10 @@ static AVOutputFormat *get_oformat(const char *codec, char *filename){
       ext = ".mp4";
       of = av_guess_format ("mp4", NULL, NULL);
       of->video_codec = MY_CODEC_ID_HEVC;
+    } else if (strcmp (codec, "webm") == 0){
+      ext = ".webm";
+      of = av_guess_format ("webm", NULL, NULL);
+      of->video_codec = MY_CODEC_ID_VP8;
     } else {
         MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "%s: ffmpeg_video_codec option value"
                    " %s is not supported", codec);
@@ -319,7 +325,8 @@ static AVOutputFormat *get_oformat(const char *codec, char *filename){
     }
 
     /* The 4 allows for ".avi" or ".mpg" to be appended. */
-    strncat(filename, ext, 4);
+    ext_length = strlength(ext);
+    strncat(filename, ext, ext_length);
 
     return of;
 }

@@ -837,6 +837,7 @@ config_param config_params[] = {
     "# ffv1 - FF video codec 1 for Lossless Encoding ( experimental )\n"
     "# mov - QuickTime ( testing )\n"
     "# ogg - Ogg/Theora ( testing )\n"
+    "# webm - WebM/VP8 ( testing )\n"
     "# mp4 - MPEG-4 Part 14 H264 encoding\n"
     "# mkv - Matroska H264 encoding\n"
     "# hevc - H.265 / HEVC (High Efficiency Video Coding)",
