@@ -264,6 +264,7 @@ void ffmpeg_finalise(void) {
  *      AVOutputFormat pointer or NULL if any error happens.
  */
 static AVOutputFormat *get_oformat(const char *codec, char *filename){
+    const char *ext;
     const int *ext_length;
     AVOutputFormat *of = NULL;
     /*
@@ -325,7 +326,7 @@ static AVOutputFormat *get_oformat(const char *codec, char *filename){
     }
 
     /* The 4 allows for ".avi" or ".mpg" to be appended. */
-    ext_length = strlength(ext);
+    ext_length = strlen(ext);
     strncat(filename, ext, ext_length);
 
     return of;
